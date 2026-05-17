@@ -64,3 +64,8 @@ packages/
 # =========================
 .DS_Store
 Thumbs.db
+
+# =========================
+# WWW root files (if applicable)
+# =========================
+wwwroot/uploads/
