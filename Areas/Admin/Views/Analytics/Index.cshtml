@@ -1,0 +1,199 @@
+﻿@model MyPortfolio.Services.Models.Analytics.AnalyticsDashboardViewModel
+
+@{
+    ViewData["Title"] = "Analytics";
+}
+
+<div class="admin-card mb-4">
+    <div class="admin-card-header">
+        <div>
+            <h2>Website Analytics</h2>
+            <p>Track page views, visitors, sessions, and important clicks.</p>
+        </div>
+    </div>
+
+    <form method="get" class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">From Date</label>
+            <input type="date" name="fromDate" value="@ViewBag.FromDate" class="form-control" />
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">To Date</label>
+            <input type="date" name="toDate" value="@ViewBag.ToDate" class="form-control" />
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary rounded-pill px-5">
+                Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="stat-grid mb-4">
+    <div class="stat-card">
+        <i class="bi bi-eye"></i>
+        <span>Page Views</span>
+        <strong>@Model.TotalPageViews</strong>
+    </div>
+
+    <div class="stat-card">
+        <i class="bi bi-people"></i>
+        <span>Unique Visitors</span>
+        <strong>@Model.UniqueVisitors</strong>
+    </div>
+
+    <div class="stat-card">
+        <i class="bi bi-clock-history"></i>
+        <span>Sessions</span>
+        <strong>@Model.TotalSessions</strong>
+    </div>
+
+    <div class="stat-card">
+        <i class="bi bi-cursor"></i>
+        <span>Total Clicks</span>
+        <strong>@Model.TotalClicks</strong>
+    </div>
+
+    <div class="stat-card">
+        <i class="bi bi-file-earmark-arrow-down"></i>
+        <span>CV Downloads</span>
+        <strong>@Model.CvDownloads</strong>
+    </div>
+
+    <div class="stat-card">
+        <i class="bi bi-chat-dots"></i>
+        <span>Contact Clicks</span>
+        <strong>@Model.ContactClicks</strong>
+    </div>
+
+    <div class="stat-card">
+        <i class="bi bi-kanban"></i>
+        <span>Project Clicks</span>
+        <strong>@Model.ProjectClicks</strong>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <div>
+                    <h2>Top Pages</h2>
+                    <p>Most visited pages in the selected period.</p>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Page</th>
+                            <th>Views</th>
+                            <th>Unique Visitors</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.TopPages)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@item.Path</strong>
+                                </td>
+                                <td>@item.Views</td>
+                                <td>@item.UniqueVisitors</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (!Model.TopPages.Any())
+            {
+                <p class="text-muted mb-0">No page views yet.</p>
+            }
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <div>
+                    <h2>Top Clicks</h2>
+                    <p>Most clicked tracked components.</p>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Component</th>
+                            <th>Clicks</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model.TopClicks)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="badge badge-soft-primary">@item.EventType</span>
+                                </td>
+                                <td>@item.ComponentName</td>
+                                <td>@item.Clicks</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (!Model.TopClicks.Any())
+            {
+                <p class="text-muted mb-0">No clicks tracked yet.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="admin-card mt-4">
+    <div class="admin-card-header">
+        <div>
+            <h2>Daily Page Views</h2>
+            <p>Traffic trend for the selected period.</p>
+        </div>
+    </div>
+
+    <div class="analytics-bars">
+        @if (Model.DailyViews.Any())
+        {
+            var maxViews = Model.DailyViews.Max(x => x.Views);
+
+            foreach (var item in Model.DailyViews)
+            {
+                var width = maxViews == 0 ? 0 : (item.Views * 100 / maxViews);
+
+                <div class="analytics-bar-row">
+                    <div class="analytics-bar-date">
+                        @item.Date.ToString("MMM dd")
+                    </div>
+
+                    <div class="analytics-bar-track">
+                        <div class="analytics-bar-fill" style="width:@width%"></div>
+                    </div>
+
+                    <div class="analytics-bar-value">
+                        @item.Views
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted mb-0">No daily views available.</p>
+        }
+    </div>
+</div>

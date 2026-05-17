@@ -1,0 +1,127 @@
+﻿@model ProjectFormViewModel
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div>
+            <h2>@ViewData["Title"]</h2>
+            <p>Create or update project content, image, links, and technologies.</p>
+        </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="Id" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row g-4">
+            <div class="col-md-8">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="DisplayOrder" class="form-label"></label>
+                <input asp-for="DisplayOrder" class="form-control" />
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Slug))
+            {
+                <div class="col-12">
+                    <label asp-for="Slug" class="form-label"></label>
+                    <input asp-for="Slug" class="form-control" readonly />
+                </div>
+            }
+
+            <div class="col-12">
+                <label asp-for="ShortDescription" class="form-label"></label>
+                <textarea asp-for="ShortDescription" class="form-control"></textarea>
+                <span asp-validation-for="ShortDescription" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="FullDescription" class="form-label"></label>
+                <textarea asp-for="FullDescription" class="form-control"></textarea>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="ProblemStatement" class="form-label"></label>
+                <textarea asp-for="ProblemStatement" class="form-control"></textarea>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="SolutionOverview" class="form-label"></label>
+                <textarea asp-for="SolutionOverview" class="form-control"></textarea>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="TechnicalHighlights" class="form-label"></label>
+                <textarea asp-for="TechnicalHighlights" class="form-control"></textarea>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="DemoUrl" class="form-label"></label>
+                <input asp-for="DemoUrl" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="GitHubUrl" class="form-label"></label>
+                <input asp-for="GitHubUrl" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="StartDate" class="form-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="EndDate" class="form-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="MainImage" class="form-label"></label>
+                <input asp-for="MainImage" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp" />
+
+                @if (!string.IsNullOrWhiteSpace(Model.CurrentMainImagePath))
+                {
+                    <div class="mt-3">
+                        <img src="@Model.CurrentMainImagePath" class="preview-image" alt="Project image" />
+                    </div>
+                }
+            </div>
+
+            @* <div class="col-md-6">
+                <label asp-for="SelectedSkillIds" class="form-label">Technologies</label>
+                <select asp-for="SelectedSkillIds" asp-items="Model.AvailableSkills" class="form-select" multiple size="8"></select>
+            </div> *@
+
+            <partial name="_ProjectSkillsCheckboxes" model="Model" />
+
+            <div class="col-md-3">
+                <div class="form-check mt-4">
+                    <input asp-for="IsPublished" class="form-check-input" />
+                    <label asp-for="IsPublished" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-check mt-4">
+                    <input asp-for="IsFeatured" class="form-check-input" />
+                    <label asp-for="IsFeatured" class="form-check-label"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary rounded-pill px-5">Save</button>
+            <a asp-area="Admin" asp-controller="Projects" asp-action="Index" class="btn btn-outline-dark rounded-pill px-5">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

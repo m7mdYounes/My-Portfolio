@@ -1,0 +1,73 @@
+﻿@model List<ContactLink>
+
+@{
+    ViewData["Title"] = "Contact Links";
+}
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div>
+            <h2>Contact Links</h2>
+            <p>Manage email, LinkedIn, GitHub, WhatsApp, and other links.</p>
+        </div>
+
+        <a asp-area="Admin" asp-controller="ContactLinks" asp-action="Create" class="btn btn-primary rounded-pill px-4">
+            Add Link
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Label</th>
+                    <th>Value</th>
+                    <th>Url</th>
+                    <th>Published</th>
+                    <th>Order</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Type</td>
+                        <td>@item.Label</td>
+                        <td>@item.Value</td>
+                        <td>
+                            <a href="@item.Url" target="_blank">@item.Url</a>
+                        </td>
+                        <td>
+                            @if (item.IsPublished)
+                            {
+                                <span class="badge badge-soft-success">Published</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-danger">Hidden</span>
+                            }
+                        </td>
+                        <td>@item.DisplayOrder</td>
+                        <td class="text-end">
+                            <div class="admin-actions justify-content-end">
+                                <a asp-area="Admin" asp-controller="ContactLinks" asp-action="Edit" asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Edit
+                                </a>
+
+                                <form asp-area="Admin" asp-controller="ContactLinks" asp-action="Delete" asp-route-id="@item.Id" method="post"
+                                      onsubmit="return confirm('Delete this contact link?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

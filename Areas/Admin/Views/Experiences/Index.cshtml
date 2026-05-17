@@ -1,0 +1,86 @@
+﻿@model List<Experience>
+
+@{
+    ViewData["Title"] = "Experiences";
+}
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div>
+            <h2>Experiences</h2>
+            <p>Manage career timeline items.</p>
+        </div>
+
+        <a asp-area="Admin" asp-controller="Experiences" asp-action="Create" class="btn btn-primary rounded-pill px-4">
+            Add Experience
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Company</th>
+                    <th>Job Title</th>
+                    <th>Period</th>
+                    <th>Published</th>
+                    <th>Order</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@item.CompanyName</strong>
+                            <div class="text-muted small">@item.Location</div>
+                        </td>
+
+                        <td>@item.JobTitle</td>
+
+                        <td>
+                            @item.StartDate.ToString("MMM yyyy")
+                            -
+                            @(item.IsCurrent ? "Present" : item.EndDate?.ToString("MMM yyyy"))
+                        </td>
+
+                        <td>
+                            @if (item.IsPublished)
+                            {
+                                <span class="badge badge-soft-success">Published</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-soft-danger">Hidden</span>
+                            }
+                        </td>
+
+                        <td>@item.DisplayOrder</td>
+
+                        <td class="text-end">
+                            <div class="admin-actions justify-content-end">
+                                <a asp-area="Admin" asp-controller="Experiences" asp-action="Edit" asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Edit
+                                </a>
+
+                                <form asp-area="Admin" asp-controller="Experiences" asp-action="TogglePublish" asp-route-id="@item.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-dark">Toggle</button>
+                                </form>
+
+                                <form asp-area="Admin" asp-controller="Experiences" asp-action="Delete" asp-route-id="@item.Id" method="post"
+                                      onsubmit="return confirm('Delete this experience?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

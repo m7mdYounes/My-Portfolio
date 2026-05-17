@@ -1,0 +1,37 @@
+﻿@model ProjectFormViewModel
+
+<div class="mb-3">
+    <label class="form-label fw-bold">Project Technologies</label>
+
+    @if (Model.AvailableSkills.Any())
+    {
+        <div class="row g-2">
+            @foreach (var skill in Model.AvailableSkills)
+            {
+                var skillId = int.Parse(skill.Value);
+                var isChecked = Model.SelectedSkillIds.Contains(skillId);
+
+                <div class="col-md-4 col-sm-6">
+                    <div class="form-check tech-check-card">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="SelectedSkillIds"
+                               value="@skill.Value"
+                               id="skill_@skill.Value"
+                               checked="@isChecked" />
+
+                        <label class="form-check-label" for="skill_@skill.Value">
+                            @skill.Text
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning mb-0">
+            No skills found. Add skills first from the Skills section.
+        </div>
+    }
+</div>

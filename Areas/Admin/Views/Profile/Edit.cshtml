@@ -1,0 +1,103 @@
+﻿@model ProfileEditViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div>
+            <h2>Edit Profile</h2>
+            <p>Main public profile, CV, and hero content.</p>
+        </div>
+    </div>
+
+    <form asp-area="Admin" asp-controller="Profile" asp-action="Edit" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="Id" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="ShortSummary" class="form-label"></label>
+                <textarea asp-for="ShortSummary" class="form-control"></textarea>
+                <span asp-validation-for="ShortSummary" class="text-danger small"></span>
+            </div>
+
+            <div class="col-12">
+                <label asp-for="LongSummary" class="form-label"></label>
+                <textarea asp-for="LongSummary" class="form-control"></textarea>
+                <span asp-validation-for="LongSummary" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Location" class="form-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="YearsOfExperience" class="form-label"></label>
+                <input asp-for="YearsOfExperience" class="form-control" />
+                <span asp-validation-for="YearsOfExperience" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-3 d-flex align-items-end">
+                <div class="form-check mb-2">
+                    <input asp-for="IsAvailableForWork" class="form-check-input" />
+                    <label asp-for="IsAvailableForWork" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="ProfileImage" class="form-label"></label>
+                <input asp-for="ProfileImage" class="form-control" type="file" accept=".jpg,.jpeg,.png,.webp" />
+
+                @if (!string.IsNullOrWhiteSpace(Model.CurrentProfileImagePath))
+                {
+                    <div class="mt-3">
+                        <img src="@Model.CurrentProfileImagePath" class="preview-image" alt="Profile image" />
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="CvFile" class="form-label"></label>
+                <input asp-for="CvFile" class="form-control" type="file" accept=".pdf" />
+
+                @if (!string.IsNullOrWhiteSpace(Model.CurrentCvFilePath))
+                {
+                    <div class="mt-3">
+                        <a href="@Model.CurrentCvFilePath" target="_blank" class="btn btn-outline-dark btn-sm">
+                            View Current CV
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary rounded-pill px-5">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

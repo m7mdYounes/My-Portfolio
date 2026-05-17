@@ -1,0 +1,66 @@
+# =========================
+# Build output
+# =========================
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+
+# =========================
+# User-specific files
+# =========================
+*.user
+*.suo
+*.rsuser
+*.userosscache
+*.sln.docstates
+
+# =========================
+# ASP.NET Core sensitive config
+# =========================
+appsettings.json
+appsettings.*.json
+!appsettings.Example.json
+
+# =========================
+# Publish profiles / deployment secrets
+# =========================
+Properties/PublishProfiles/
+*.pubxml
+*.pubxml.user
+
+# =========================
+# Databases
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+
+# =========================
+# Logs
+# =========================
+logs/
+Logs/
+*.log
+
+# =========================
+# Environment / secrets
+# =========================
+.env
+.env.*
+secrets.json
+
+# =========================
+# NuGet
+# =========================
+packages/
+*.nupkg
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db

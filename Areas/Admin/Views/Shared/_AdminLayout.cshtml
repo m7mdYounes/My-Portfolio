@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Admin Portal</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+
+<body>
+    <div class="admin-shell">
+        <aside class="admin-sidebar">
+            <a class="admin-brand" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                <span>MY</span>
+                <div>
+                    <strong>Portfolio</strong>
+                    <small>Admin Portal</small>
+                </div>
+            </a>
+
+            <nav class="admin-nav">
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                    <i class="bi bi-speedometer2"></i>
+                    Dashboard
+                </a>
+
+                <a asp-area="Admin" asp-controller="Analytics" asp-action="Index">
+                    <i class="bi bi-bar-chart-line"></i>
+                    Analytics
+                </a>
+
+                <a asp-area="Admin" asp-controller="Profile" asp-action="Edit">
+                    <i class="bi bi-person-circle"></i>
+                    Profile
+                </a>
+
+                <a asp-area="Admin" asp-controller="Projects" asp-action="Index">
+                    <i class="bi bi-kanban"></i>
+                    Projects
+                </a>
+
+                <a asp-area="Admin" asp-controller="Experiences" asp-action="Index">
+                    <i class="bi bi-briefcase"></i>
+                    Experiences
+                </a>
+
+                <a asp-area="Admin" asp-controller="Skills" asp-action="Index">
+                    <i class="bi bi-tools"></i>
+                    Skills
+                </a>
+
+                <a asp-area="Admin" asp-controller="ContactLinks" asp-action="Index">
+                    <i class="bi bi-link-45deg"></i>
+                    Contact Links
+                </a>
+
+                <a asp-area="Admin" asp-controller="Settings" asp-action="Edit">
+                    <i class="bi bi-gear"></i>
+                    Settings
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Account"
+                   asp-action="ChangeEmail"
+                   class="admin-nav-link">
+                    <i class="bi bi-envelope"></i>
+                    Change Email
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Account"
+                   asp-action="ChangePassword"
+                   class="admin-nav-link">
+                    <i class="bi bi-key"></i>
+                    Change Password
+                </a>
+
+                <a asp-area="" asp-controller="Home" asp-action="Index" target="_blank">
+                    <i class="bi bi-box-arrow-up-right"></i>
+                    View Website
+                </a>
+            </nav>
+        </aside>
+
+        <div class="admin-main">
+            <header class="admin-topbar">
+                <div>
+                    <h1>@ViewData["Title"]</h1>
+                    <p>Manage your portfolio content and settings.</p>
+                </div>
+
+                <form asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-4">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </button>
+                </form>
+            </header>
+
+            <main class="admin-content">
+                @if (TempData["SuccessMessage"] is not null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] is not null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

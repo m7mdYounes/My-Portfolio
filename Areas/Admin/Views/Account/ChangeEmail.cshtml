@@ -1,0 +1,44 @@
+﻿@model ChangeEmailViewModel
+
+@{
+    ViewData["Title"] = "Change Email";
+}
+
+<div class="admin-page-header">
+    <div>
+        <h1>Change Email</h1>
+        <p>Update the login email for your admin account.</p>
+    </div>
+</div>
+
+<div class="admin-card">
+    <form asp-action="ChangeEmail" method="post">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="CurrentEmail" class="form-label"></label>
+            <input asp-for="CurrentEmail" class="form-control" readonly />
+            <span asp-validation-for="CurrentEmail" class="text-danger"></span>
+        </div>
+
+        <div class="mb-4">
+            <label asp-for="NewEmail" class="form-label"></label>
+            <input asp-for="NewEmail" class="form-control" />
+            <span asp-validation-for="NewEmail" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Save New Email
+        </button>
+
+        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,130 @@
+﻿@using MyPortfolio.ViewModels.Public
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Mohamed Portfolio</title>
+
+    <meta name="description" content="Mohamed Younes Krema - .NET Backend Engineer portfolio." />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top portfolio-navbar">
+            <div class="container">
+                <a class="navbar-brand portfolio-logo"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index">
+                    MY
+                </a>
+
+                <button class="navbar-toggler border-0 shadow-none"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">
+                                Home
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#about">About</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#experience">Experience</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Projects"
+                               asp-action="Index">
+                                Portfolio
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#skills">Skills</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/#contact">Contact</a>
+                        </li>
+                        
+                        <li class="nav-item ms-lg-2">
+                            <a class="admin-mini-btn"
+                               asp-area="Admin"
+                               asp-controller="Dashboard"
+                               asp-action="Index"
+                               title="Admin Portal">
+                                <i class="bi bi-shield-lock"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item ms-lg-3">
+                            <a class="btn btn-sm btn-outline-light rounded-pill px-4"
+                               href="/#contact"
+                               data-track-event="NavigationClick"
+                               data-track-component="Navbar.ContactButton"
+                               data-track-target-type="Navigation"
+                               data-track-target-id="contact"
+                               data-track-target-text="Hire Me">
+                                Hire Me
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <span class="footer-brand">Mohamed Younes</span>
+                    <p class="footer-text mb-0">
+                        .NET Backend Engineer building secure, scalable web applications.
+                    </p>
+                </div>
+
+                <div class="footer-copy">
+                    &copy; @DateTime.UtcNow.Year - All Rights Reserved
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/analytics-tracker.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

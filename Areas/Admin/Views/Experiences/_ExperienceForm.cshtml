@@ -1,0 +1,125 @@
+﻿@model ExperienceFormViewModel
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div>
+            <h2>@ViewData["Title"]</h2>
+            <p>Create or update career timeline details.</p>
+        </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="Id" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <label asp-for="CompanyName" class="form-label"></label>
+                <input asp-for="CompanyName" class="form-control" />
+                <span asp-validation-for="CompanyName" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="JobTitle" class="form-label"></label>
+                <input asp-for="JobTitle" class="form-control" />
+                <span asp-validation-for="JobTitle" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="EmploymentType" class="form-label"></label>
+                <input asp-for="EmploymentType" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Location" class="form-label"></label>
+                <input asp-for="Location" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="DisplayOrder" class="form-label"></label>
+                <input asp-for="DisplayOrder" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="StartDate" class="form-label"></label>
+                <input asp-for="StartDate" type="date" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="EndDate" class="form-label"></label>
+                <input asp-for="EndDate" type="date" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="CompanyLogo" class="form-label"></label>
+                <input asp-for="CompanyLogo" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+
+                @if (!string.IsNullOrWhiteSpace(Model.CurrentCompanyLogoPath))
+                {
+                    <div class="mt-3">
+                        <img src="@Model.CurrentCompanyLogoPath" class="preview-image" alt="Company logo" />
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-3 d-flex align-items-end">
+                <div class="form-check mb-2">
+                    <input asp-for="IsCurrent" class="form-check-input" />
+                    <label asp-for="IsCurrent" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="col-md-3 d-flex align-items-end">
+                <div class="form-check mb-2">
+                    <input asp-for="IsPublished" class="form-check-input" />
+                    <label asp-for="IsPublished" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Responsibilities</label>
+
+                <div id="responsibilities-container">
+                    @if (Model.Responsibilities.Any())
+                    {
+                        for (var i = 0; i < Model.Responsibilities.Count; i++)
+                        {
+                            <div class="dynamic-list-item">
+                                <input name="Responsibilities[@i]" value="@Model.Responsibilities[i]" class="form-control" placeholder="Responsibility item" />
+                                <button type="button" class="btn btn-outline-danger" onclick="removeDynamicRow(this)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="dynamic-list-item">
+                            <input name="Responsibilities[0]" class="form-control" placeholder="Responsibility item" />
+                            <button type="button" class="btn btn-outline-danger" onclick="removeDynamicRow(this)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
+
+                <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addResponsibilityRow()">
+                    Add Responsibility
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary rounded-pill px-5">Save</button>
+            <a asp-area="Admin" asp-controller="Experiences" asp-action="Index" class="btn btn-outline-dark rounded-pill px-5">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

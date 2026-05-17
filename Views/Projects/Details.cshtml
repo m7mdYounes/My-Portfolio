@@ -1,0 +1,137 @@
+﻿@model ProjectDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<section class="page-hero project-details-hero">
+    <div class="hero-overlay"></div>
+
+    <div class="container page-hero-container text-center">
+        <p class="hero-kicker">Project Details</p>
+        <h1 class="page-title">@Model.Title</h1>
+        <p class="page-description">@Model.ShortDescription</p>
+
+        <div class="hero-actions">
+            @if (!string.IsNullOrWhiteSpace(Model.DemoUrl))
+            {
+                <a href="@Model.DemoUrl"
+                   target="_blank"
+                   rel="noopener"
+                   class="btn btn-primary-custom"
+                   data-track-event="DemoLinkClick"
+                   data-track-component="ProjectDetails.DemoButton"
+                   data-track-target-type="Project"
+                   data-track-target-id="@Model.Id"
+                   data-track-target-text="@Model.Title">
+                    Live Demo
+                </a>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.GitHubUrl))
+            {
+                <a href="@Model.GitHubUrl"
+                   target="_blank"
+                   rel="noopener"
+                   class="btn btn-outline-custom"
+                   data-track-event="GitHubRepoClick"
+                   data-track-component="ProjectDetails.GitHubButton"
+                   data-track-target-type="Project"
+                   data-track-target-id="@Model.Id"
+                   data-track-target-text="@Model.Title">
+                    GitHub
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="section-block project-details-section">
+    <div class="container">
+        @if (!string.IsNullOrWhiteSpace(Model.MainImagePath))
+        {
+            <div class="details-main-image">
+                <img src="@Model.MainImagePath" alt="@Model.Title" />
+            </div>
+        }
+
+        <div class="row g-5 mt-4">
+            <div class="col-lg-8">
+                @if (!string.IsNullOrWhiteSpace(Model.FullDescription))
+                {
+                    <div class="details-block">
+                        <h2>Overview</h2>
+                        <p>@Model.FullDescription</p>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.ProblemStatement))
+                {
+                    <div class="details-block">
+                        <h2>Problem</h2>
+                        <p>@Model.ProblemStatement</p>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.SolutionOverview))
+                {
+                    <div class="details-block">
+                        <h2>Solution</h2>
+                        <p>@Model.SolutionOverview</p>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.TechnicalHighlights))
+                {
+                    <div class="details-block">
+                        <h2>Technical Highlights</h2>
+                        <p>@Model.TechnicalHighlights</p>
+                    </div>
+                }
+            </div>
+
+            <div class="col-lg-4">
+                <aside class="details-sidebar">
+                    <h3>Tech Stack</h3>
+
+                    <div class="tech-list">
+                        @foreach (var skill in Model.Skills)
+                        {
+                            <span>@skill</span>
+                        }
+                    </div>
+
+                    <hr />
+
+                    <a asp-controller="Projects"
+                       asp-action="Index"
+                       class="project-link">
+                        <i class="bi bi-arrow-left"></i>
+                        Back to Projects
+                    </a>
+                </aside>
+            </div>
+        </div>
+
+        @if (Model.Images.Any())
+        {
+            <div class="project-gallery mt-5">
+                <div class="section-heading text-center">
+                    <p class="section-kicker">Gallery</p>
+                    <h2 class="section-title">Project Screenshots</h2>
+                </div>
+
+                <div class="row g-4">
+                    @foreach (var image in Model.Images)
+                    {
+                        <div class="col-md-6">
+                            <div class="gallery-image">
+                                <img src="@image" alt="@Model.Title screenshot" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>

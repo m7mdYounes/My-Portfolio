@@ -1,0 +1,91 @@
+﻿@model List<ProjectCardViewModel>
+
+@{
+    ViewData["Title"] = "Portfolio";
+}
+
+<section class="page-hero">
+    <div class="hero-overlay"></div>
+
+    <div class="container page-hero-container text-center">
+        <p class="hero-kicker">Portfolio</p>
+        <h1 class="page-title">My Projects</h1>
+        <p class="page-description">
+            A selection of backend systems, web applications, and practical engineering work.
+        </p>
+    </div>
+</section>
+
+<section class="section-block projects-section">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var project in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="project-card">
+                        <a asp-controller="Projects"
+                           asp-action="Details"
+                           asp-route-slug="@project.Slug"
+                           class="project-image-link"
+                           data-track-event="ProjectCardClick"
+                           data-track-component="ProjectsPage.ProjectCard"
+                           data-track-target-type="Project"
+                           data-track-target-id="@project.Id"
+                           data-track-target-text="@project.Title">
+                            @if (!string.IsNullOrWhiteSpace(project.MainImagePath))
+                            {
+                                <img src="@project.MainImagePath" alt="@project.Title" class="project-image" />
+                            }
+                            else
+                            {
+                                <div class="project-image-placeholder">
+                                    <i class="bi bi-code-square"></i>
+                                </div>
+                            }
+                        </a>
+
+                        <div class="project-body">
+                            @if (project.IsFeatured)
+                            {
+                                <div class="project-meta">
+                                    <span>Featured</span>
+                                </div>
+                            }
+
+                            <h3>@project.Title</h3>
+                            <p>@project.ShortDescription</p>
+
+                            <div class="tech-list">
+                                @foreach (var skill in project.Skills.Take(5))
+                                {
+                                    <span>@skill</span>
+                                }
+                            </div>
+
+                            <a asp-controller="Projects"
+                               asp-action="Details"
+                               asp-route-slug="@project.Slug"
+                               class="project-link"
+                               data-track-event="ProjectDetailsClick"
+                               data-track-component="ProjectsPage.ProjectDetailsLink"
+                               data-track-target-type="Project"
+                               data-track-target-id="@project.Id"
+                               data-track-target-text="@project.Title">
+                                View Details
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+                <h2>No projects yet</h2>
+                <p>Published projects will appear here.</p>
+            </div>
+        }
+    </div>
+</section>

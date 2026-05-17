@@ -1,0 +1,87 @@
+﻿@model SiteSettingsEditViewModel
+
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div>
+            <h2>Site Settings</h2>
+            <p>Manage metadata, logo, favicon, and visual settings.</p>
+        </div>
+    </div>
+
+    <form asp-area="Admin" asp-controller="Settings" asp-action="Edit" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="Id" type="hidden" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <label asp-for="SiteTitle" class="form-label"></label>
+                <input asp-for="SiteTitle" class="form-control" />
+                <span asp-validation-for="SiteTitle" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="PrimaryColor" class="form-label"></label>
+                <input asp-for="PrimaryColor" class="form-control" placeholder="#0ea5e9" />
+            </div>
+
+            <div class="col-12">
+                <label asp-for="MetaDescription" class="form-label"></label>
+                <textarea asp-for="MetaDescription" class="form-control"></textarea>
+                <span asp-validation-for="MetaDescription" class="text-danger small"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="SecondaryColor" class="form-label"></label>
+                <input asp-for="SecondaryColor" class="form-control" placeholder="#111827" />
+            </div>
+
+            <div class="col-md-6 d-flex align-items-end">
+                <div class="form-check mb-2">
+                    <input asp-for="EnableDarkMode" class="form-check-input" />
+                    <label asp-for="EnableDarkMode" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="LogoFile" class="form-label"></label>
+                <input asp-for="LogoFile" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+
+                @if (!string.IsNullOrWhiteSpace(Model.CurrentLogoPath))
+                {
+                    <div class="mt-3">
+                        <img src="@Model.CurrentLogoPath" class="preview-image" alt="Logo" />
+                    </div>
+                }
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="FaviconFile" class="form-label"></label>
+                <input asp-for="FaviconFile" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+
+                @if (!string.IsNullOrWhiteSpace(Model.CurrentFaviconPath))
+                {
+                    <div class="mt-3">
+                        <img src="@Model.CurrentFaviconPath" class="preview-image" alt="Favicon" />
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary rounded-pill px-5">
+                Save Settings
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

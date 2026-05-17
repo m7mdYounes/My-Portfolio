@@ -1,0 +1,73 @@
+﻿@model List<SkillCategory>
+
+@{
+    ViewData["Title"] = "Skills";
+}
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div>
+            <h2>Skills</h2>
+            <p>Manage skill categories and technologies.</p>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a asp-area="Admin" asp-controller="Skills" asp-action="CreateCategory" class="btn btn-outline-primary rounded-pill px-4">
+                Add Category
+            </a>
+
+            <a asp-area="Admin" asp-controller="Skills" asp-action="Create" class="btn btn-primary rounded-pill px-4">
+                Add Skill
+            </a>
+        </div>
+    </div>
+
+    @foreach (var category in Model)
+    {
+        <div class="mb-4">
+            <h4 class="fw-bold">@category.Name</h4>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Level</th>
+                            <th>Published</th>
+                            <th>Order</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var skill in category.Skills.OrderBy(x => x.DisplayOrder))
+                        {
+                            <tr>
+                                <td>@skill.Name</td>
+                                <td>@skill.Level</td>
+                                <td>
+                                    @if (skill.IsPublished)
+                                    {
+                                        <span class="badge badge-soft-success">Published</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-soft-danger">Hidden</span>
+                                    }
+                                </td>
+                                <td>@skill.DisplayOrder</td>
+                                <td class="text-end">
+                                    <form asp-area="Admin" asp-controller="Skills" asp-action="Delete" asp-route-id="@skill.Id" method="post"
+                                          onsubmit="return confirm('Delete this skill?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
