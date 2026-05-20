@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyPortfolio.Data;
 using MyPortfolio.Extensions;
+using MyPortfolio.Helpers;
 using MyPortfolio.Helpers.Implementations;
 using MyPortfolio.Helpers.Interfaces;
 using MyPortfolio.Models.Identity;
@@ -46,12 +48,47 @@ builder.Services
         options.SignIn.RequireConfirmedEmail = false;
         options.SignIn.RequireConfirmedAccount = false;
 
-        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(10);
         options.Lockout.MaxFailedAccessAttempts = 5;
         options.Lockout.AllowedForNewUsers = true;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/admin/account/login";
+    options.LogoutPath = "/admin/account/logout";
+    options.AccessDeniedPath = "/admin/account/access-denied";
+
+    options.Cookie.Name = "MyPortfolio.Admin.Auth";
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+
+    options.ExpireTimeSpan = TimeSpan.FromDays(15);
+
+    options.SlidingExpiration = true;
+
+    options.Events = new CookieAuthenticationEvents
+    {
+        OnValidatePrincipal = async context =>
+        {
+            await SecurityStampValidator.ValidatePrincipalAsync(context);
+
+            if (context.Principal?.Identity?.IsAuthenticated != true)
+                return;
+
+            var path = context.Request.Path.Value ?? string.Empty;
+
+            if (path.StartsWith("/admin", StringComparison.OrdinalIgnoreCase) &&
+                context.Principal.IsInRole("Admin"))
+            {
+                context.ShouldRenew = true;
+            }
+        }
+    };
+});
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
